@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Práctica</title>
+</head>
+<body>
+<div class="wrapper">
+    <!--Un formulario de compra-->
+    <h2 class="wrapper__title">¡Rellena el formulario de compra!</h2>
+    <!--Añadir una acción-->
+    <form class="form" action="https://echo.htmlacademy.ru/" method="post">
+        <div class="user">
+            <ul class="user-info">
+                <li class="user-info__item">
+                    <!--Añadir una etiqueta de nombre completo-->
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" name="nombre_completo" placeholder="Escriba su nombre completo">
+                </li>
+                <li class="user-info__item">
+                    <!--Añadir una etiqueta de correo electrónico-->
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="Escriba su correo electrónico">
+                </li>
+            </ul>
+            <!--Campos para la dirección y fecha de entrega-->
+            <ul class="address-date">
+                <li class="user-info__item">
+                    <!--Añadir una etiqueta de dirección-->
+                    <label for="address">Su dirección</label>
+                    <input type="text" name="direccion" id="address" placeholder="Escriba su dirección">
+                </li>
+                <li class="user-info__item">
+                    <!--Añadir una etiqueta de fecha de entrega-->
+                    <label for="date">Designar fecha de entrega</label>
+                    <input type="date" name="fecha_entrega" id="date">
+                </li>
+            </ul>
+        </div>
+        <div class="delivery">
+            <ul class="delivery-info">
+                <h3 class="delivery__title">Elija el tipo de entrega</h3>
+                <li class="delivery-info__item">
+                    <!--Agregar una etiqueta de tipo de entrega-->
+                    <label for="courier">Mensajero</label>
+                    <input type="radio" id="courier" name="tipo_entrega" value="mensajero">
+                </li>
+                <li class="delivery-info__item">
+                    <!--Agregar una etiqueta de tipo de entrega-->
+                    <label for="sam">Retiro presencial</label>
+                    <input type="radio" id="sam" name="tipo_entrega" value="retiro_presencial">
+                </li>
+                <li class="delivery-info__item">
+                    <!--Agregar una etiqueta de tipo de entrega-->
+                    <label for="pochta">Mail</label>
+                    <input type="radio" id="pochta" name="tipo_entrega" value="mail">
+                </li>
+            </ul>
+            <ul class="delivery-info">
+                <h3 class="delivery__title">Elige servicios adicionales</h3>
+                <li class="delivery-info__item">
+                    <!--Añadir una etiqueta de servicio adicional-->
+                    <label for="dop1">Entrega de mensajería urgente</label>
+                    <input type="checkbox" name="servicios_adicionales" id="dop1" value="mensajeria_urgente">
+                </li>
+                <li class="delivery-info__item">
+                    <!--Añadir una etiqueta de servicio adicional-->
+                    <label for="dop2">Alquiler de cargadores</label>
+                    <input type="checkbox" name="servicios_adicionales" id="dop2" value="alquiler_cargadores">
+                </li>
+                <li class="delivery-info__item">
+                    <!--Añadir una etiqueta de servicio adicional-->
+                    <label for="dop3">Embalaje protegido</label>
+                    <input type="checkbox" name="servicios_adicionales" id="dop3" value="embalaje_protegido">
+                </li>
+            </ul>
+        </div>
+            <div class="select">
+                <h3 class="select__title">Deja un comentario y elige un tipo de pago</h3>
+                <select name="tipo_pago" id="">
+                    <option value="online">Online</option>
+                    <option value="tarjeta_entrega">Tarjeta al momento de la entrega</option>
+                    <option value="efectivo_entrega">Efectivo al momento de la entrega</option>
+                </select>
+                <!--Añadir una etiqueta de comentario-->
+                <label for="comment">Deja un comentario aquí</label>
+                <textarea name="comentario" id="comment" cols="30" rows="10" placeholder="Tu comentario"></textarea>
+            </div>
+        <!--Añadir un botón-->
+        <button class="button" type="submit">¡Enviar!</button>
+    </form>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>
