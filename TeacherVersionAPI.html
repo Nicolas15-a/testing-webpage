@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Wiki</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #f8f9fa;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #333;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+        nav a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: #333;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            flex: 1;
+        }
+        .hero {
+            background-color: #e9ecef;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: #6c757d;
+        }
+        .search-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .search-form input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+        .search-form button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 0.25rem 0.25rem 0;
+            cursor: pointer;
+        }
+        .breed-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .breed-tag {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .breed-tag:hover {
+            background-color: #0056b3;
+        }
+        .featured {
+            padding: 4rem 2rem;
+        }
+        .featured h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 1rem;
+        }
+        .card-content h3 {
+            margin-bottom: 0.5rem;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        footer nav {
+            margin-top: 0.5rem;
+        }
+        footer nav a {
+            margin: 0 0.5rem;
+            color: #6c757d;
+        }
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav {
+                margin-top: 1rem;
+            }
+            nav a {
+                margin-left: 0;
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src="/api/placeholder/40/40" alt="Animal Wiki Logo">
+            <span>Animal Wiki</span>
+        </a>
+        <nav>
+            <a href="#">Inicio</a>
+            <a href="#">Categorías</a>
+            <a href="#">Acerca de</a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <h1>Descubre el Asombroso Mundo de los Gatos</h1>
+            <p>Explora datos fascinantes sobre diferentes razas de gatos y aprende sobre nuevas cada día!</p>
+            <form class="search-form" id="searchForm">
+                <input type="search" id="searchInput" placeholder="Busca una raza de gato...">
+                <button type="submit">Buscar</button>
+            </form>
+            <div class="breed-tags" id="breedTags">
+                <!-- Las tarjetas de razas se generarán dinámicamente aquí -->
+            </div>
+        </section>
+        <section class="featured">
+            <h2>Gatos Destacados</h2>
+            <div class="card-grid" id="catGrid">
+                <!-- Las tarjetas de gatos se generarán dinámicamente aquí -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2023 Animal Wiki. Todos los derechos reservados.</p>
+        <nav>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Contacto</a>
+        </nav>
+    </footer>
+
+    <script>
+        const API_KEY = 'live_IwR6AANtC4ubhq1RDzBpe8n7sw7n0Cob0UIakmsUabGtroKror39tCHIaLuMy8I1'; 
+        // Reemplaza con tu API key de TheCatAPI
+        const API_URL = 'https://api.thecatapi.com/v1';
+
+        async function fetchCats(breed = '') {
+            let url = `${API_URL}/images/search?limit=3&has_breeds=1`;
+            if (breed) {
+                url += `&breed_ids=${breed}`;
+            }
+            const response = await fetch(url, {
+                headers: {
+                    'x-api-key': API_KEY
+                }
+            });
+            return await response.json();
+        }
+
+        async function fetchBreeds() {
+            const response = await fetch(`${API_URL}/breeds`, {
+                headers: {
+                    'x-api-key': API_KEY
+                }
+            });
+            return await response.json();
+        }
+
+        function createCatCard(cat) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const breedInfo = cat.breeds && cat.breeds.length > 0 ? cat.breeds[0] : null;
+            
+            card.innerHTML = `
+                <img src="${cat.url}" alt="${breedInfo?.name || 'Gato'}">
+                <div class="card-content">
+                    <h3>${breedInfo?.name || 'Gato desconocido'}</h3>
+                    <p>${breedInfo?.description || 'Información no disponible'}</p>
+                </div>
+            `;
+            return card;
+        }
+
+        function createBreedTag(breed) {
+            const tag = document.createElement('div');
+            tag.className = 'breed-tag';
+            tag.textContent = breed.name;
+            tag.addEventListener('click', () => displayCats(breed.id));
+            return tag;
+        }
+
+        async function displayBreedTags() {
+            const breedTags = document.getElementById('breedTags');
+            breedTags.innerHTML = ''; // Limpiar las tarjetas existentes
+            const breeds = await fetchBreeds();
+            const shuffled = breeds.sort(() => 0.5 - Math.random());
+            shuffled.slice(0, 10).forEach(breed => {
+                const tag = createBreedTag(breed);
+                breedTags.appendChild(tag);
+            });
+        }
+
+        async function displayCats(breed = '') {
+            const catGrid = document.getElementById('catGrid');
+            catGrid.innerHTML = ''; // Limpiar el grid existente
+            try {
+                const cats = await fetchCats(breed);
+                cats.forEach(cat => {
+                    const card = createCatCard(cat);
+                    catGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error al cargar los gatos:', error);
+                catGrid.innerHTML = '<p>Lo sentimos, hubo un error al cargar los gatos. Por favor, inténtalo de nuevo más tarde.</p>';
+            }
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const searchInput = document.getElementById('searchInput');
+            const breeds = await fetchBreeds();
+            const matchedBreed = breeds.find(breed => 
+                breed.name.toLowerCase().includes(searchInput.value.toLowerCase())
+            );
+            if (matchedBreed) {
+                displayCats(matchedBreed.id);
+            } else {
+                alert('Raza de gato no encontrada. Mostrando gatos aleatorios.');
+                displayCats();
+            }
+        });
+
+        // Cargar gatos iniciales y tarjetas de razas
+        displayCats();
+        displayBreedTags();
+    </script>
+</body>
+</html>
